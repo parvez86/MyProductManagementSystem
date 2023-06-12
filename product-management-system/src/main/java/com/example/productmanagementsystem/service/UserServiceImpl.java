@@ -15,11 +15,11 @@ public class UserServiceImpl implements UserService{
     private UserRepository repository;
     @Override
     public User getUseByEmail(String email) {
-        return repository.findByEmail(email);
+        return repository.findByEmail(email).orElse(null);
     }
 
     @Override
-    public User getUsrById(Long id) {
+    public User getUsrById(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(Long id, User user) {
+    public User updateUser(Integer id, User user) {
         User new_user = repository.findById(id).orElse(null);
         if(Objects.nonNull(new_user)){
             new_user.setName(user.getName());
@@ -49,18 +49,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User deleteUser(Long id) {
+    public User deleteUser(Integer id) {
         User user = repository.findById(id).orElse(null);
         if(Objects.nonNull(user)){
             repository.delete(user);
         }
         return user;
     }
+    
 
     @Override
     public User authenticate(AuthReqDto requestDto) {
         System.out.println("Request dto: "+ requestDto);
-        User user = repository.findByEmailAndPassword(requestDto.getEmail(), requestDto.getPassword());
+        User user = repository.findByEmailAndPassword(requestDto.getEmail(), requestDto.getPassword()).orElse(null);
         if(Objects.nonNull(user)){
             System.out.println("Authentication");
             System.out.println("User: "+ user);
