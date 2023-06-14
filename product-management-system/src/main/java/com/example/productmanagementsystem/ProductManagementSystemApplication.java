@@ -1,20 +1,7 @@
 package com.example.productmanagementsystem;
 
-import com.example.productmanagementsystem.auth.AuthenticationService;
-import com.example.productmanagementsystem.auth.RegisterRequest;
-import com.example.productmanagementsystem.entity.Role;
-import com.example.productmanagementsystem.entity.RoleType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import java.util.List;
-import java.util.Set;
-
-import static com.example.productmanagementsystem.entity.RoleType.ADMIN;
-import static com.example.productmanagementsystem.entity.RoleType.USER;
 
 @SpringBootApplication
 public class ProductManagementSystemApplication {
@@ -28,30 +15,23 @@ public class ProductManagementSystemApplication {
 //			AuthenticationService service
 //	) {
 //		return args -> {
-//			Role role_user = Role.builder()
-//					.name(USER)
-//					.build();
-//			Role role_admin = Role.builder()
-//					.name(ADMIN)
-//					.build();
-//
-//			var user = RegisterRequest.builder()
+//			var user = RegisterReque                   st.builder()
 //					.name("sp")
 //					.email("sp86@gmail.com")
 //					.password("sp86")
-//					.roles(List.of(USER))
+//					.role(USER)
 //					.build();
-//
-//			System.out.println("User token: " + service.register(user).getToken());
+//			AuthenticationResponse response = service.register(user);
+//			System.out.println("User token: " + ((Objects.nonNull(response)?response.getToken():"null")));
 //
 //			var admin = RegisterRequest.builder()
 //					.name("Admin")
-//					.email("admin@mail.com")
+//					.email("admin@gmail.com")
 //					.password("password")
-//					.roles(List.of(ADMIN, USER))
+//					.role(ADMIN)
 //					.build();
 //
-//			System.out.println("Admin token: " + service.register(admin).getToken());
+//			System.out.println("Admin token: " + ((Objects.nonNull(response)?response.getToken():"null")));
 //
 //			ObjectMapper mapper = new ObjectMapper();
 //			System.out.println("user: "+mapper.writeValueAsString(user));

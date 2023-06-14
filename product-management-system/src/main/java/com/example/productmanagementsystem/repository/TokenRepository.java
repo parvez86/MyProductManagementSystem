@@ -11,16 +11,16 @@ import java.util.Optional;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Integer> {
-//    @Query(value = """
-//                  SELECT * \s
-//                  FROM Token t\s
-//                  where t.user_id = :id and (t.expired = false or t.revoked = false)
-//            """, nativeQuery = true)
     @Query(value = """
-          select t from Token t inner join User u\s
-          on t.user_id = u.id\s
-          where u.id = :id and (t.expired = false or t.revoked = false)\s
-    """)
+                  SELECT * \s
+                  FROM Token t\s
+                  where t.user_id = :id and (t.expired = false or t.revoked = false)
+            """, nativeQuery = true)
+//    @Query(value = """
+//          select t from Token t inner join User u\s
+//          on t.user_id = u.id\s
+//          where u.id = :id and (t.expired = false or t.revoked = false)\s
+//    """)
     List<Token> findAllValidTokenByUser(@Param("id") Integer id);
 //    List<Token> findByRevokedOrExpired(Boolean expired, Boolean invoked);
 

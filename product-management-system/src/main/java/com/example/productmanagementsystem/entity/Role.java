@@ -1,24 +1,39 @@
 package com.example.productmanagementsystem.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "role")
-public class Role {
-    @Id
-//    @Column(name = "role_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-    private Integer id;
+import static com.example.productmanagementsystem.entity.Permission.*;
 
-    @Enumerated(EnumType.STRING)
-    private RoleType name;
+@RequiredArgsConstructor
+public enum Role {
+
+    USER(Collections.emptySet()),
+    ADMIN(
+            Set.of(
+                    ADMIN_READ,
+                    ADMIN_UPDATE,
+                    ADMIN_DELETE,
+                    ADMIN_CREATE
+//                    ,
+//                    ...
+            )
+    );
+
+    @Getter
+    private final Set<Permission> permissions;
+
+    public List<SimpleGrantedAuthority> getAuthorities() {
+        var authorities = getPermissions()
+                .stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+        return authorities;
+    }
 }
