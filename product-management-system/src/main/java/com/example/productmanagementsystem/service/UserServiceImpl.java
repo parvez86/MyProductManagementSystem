@@ -1,71 +1,65 @@
 package com.example.productmanagementsystem.service;
 
-import com.example.productmanagementsystem.dto.AuthReqDto;
-import com.example.productmanagementsystem.dto.UserDto;
+import com.example.productmanagementsystem.converter.UserConverter;
+import com.example.productmanagementsystem.dto.UserRequestDTO;
+import com.example.productmanagementsystem.dto.UserResponseDTO;
 import com.example.productmanagementsystem.entity.User;
 import com.example.productmanagementsystem.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
+import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+    private final UserConverter converter;
+    private final PasswordEncoder passwordEncoder;
     @Override
-    public User getUseByEmail(String email) {
+    public User getUserByEmail(String email) {
         return repository.findByEmail(email).orElse(null);
     }
-
     @Override
-    public User getUsrById(Integer id) {
-        return repository.findById(id).orElse(null);
+    public List<UserResponseDTO> getUsers() {
+        System.out.println("Hi service");
+        List<User> users = repository.findAll();
+        System.out.println(users.size());
+        return converter.getUserResponse(users);
     }
 
     @Override
-    public User saveUser(UserDto userDto) {
-        if(!userDto.getPassword().equals(userDto.getConfirm_password())){
-            System.out.println("password mismatch");
-            return null;
+    public UserResponseDTO getUserById(Integer id) {
+        User user = repository.findById(id).orElse(null);
+        if (Objects.nonNull(user)){
+            return converter.getUserResponse(user);
         }
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        return repository.save(user);
+        return null;
     }
 
     @Override
-    public User updateUser(Integer id, User user) {
-        User new_user = repository.findById(id).orElse(null);
-        if(Objects.nonNull(new_user)){
-            new_user.setName(user.getName());
-            new_user.setEmail(user.getEmail());
-            new_user.setPassword(user.getPassword());
-            repository.save(new_user);
+    public UserResponseDTO updateUserById(Integer id, UserRequestDTO userRequestDTO) {
+        User user = repository.findById(id).orElse(null);
+        if(Objects.nonNull(user)){
+            user.setName(userRequestDTO.getName());
+            user.setEmail(userRequestDTO.getEmail());
+            user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+            user.setRole(userRequestDTO.getRole());
+            repository.save(user);
+            return converter.getUserResponse(user);
         }
-        return new_user;
+        return null;
     }
 
     @Override
-    public User deleteUser(Integer id) {
+    public UserResponseDTO deleteUserById(Integer id) {
         User user = repository.findById(id).orElse(null);
         if(Objects.nonNull(user)){
             repository.delete(user);
-        }
-        return user;
-    }
-    
-
-    @Override
-    public User authenticate(AuthReqDto requestDto) {
-        System.out.println("Request dto: "+ requestDto);
-        User user = repository.findByEmailAndPassword(requestDto.getEmail(), requestDto.getPassword()).orElse(null);
-        if(Objects.nonNull(user)){
-            System.out.println("Authentication");
-            System.out.println("User: "+ user);
-            return user;
+            return converter.getUserResponse(user);
         }
         return null;
     }

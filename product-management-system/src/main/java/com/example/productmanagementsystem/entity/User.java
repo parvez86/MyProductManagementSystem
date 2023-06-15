@@ -1,17 +1,18 @@
 package com.example.productmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 
 import java.util.*;
 
 @Builder
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,17 +21,19 @@ import java.util.*;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
     private Integer id;
     private String name;
     @Email
+    @Column(unique = true)
     private String email;
 
     private String password;
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
 
     @Override

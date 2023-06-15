@@ -1,15 +1,18 @@
 package com.example.productmanagementsystem.service;
 
-import com.example.productmanagementsystem.dto.AuthReqDto;
-import com.example.productmanagementsystem.dto.UserDto;
+import com.example.productmanagementsystem.dto.UserRequestDTO;
+import com.example.productmanagementsystem.dto.UserResponseDTO;
 import com.example.productmanagementsystem.entity.User;
 
-public interface UserService {
-    User getUseByEmail(String email);
-    User getUsrById(Integer id);
-    User saveUser(UserDto user);
-    User updateUser(Integer id, User user);
-    User deleteUser(Integer id);
+import java.util.List;
 
-    User authenticate(AuthReqDto requestDto);
+public interface UserService {
+    User getUserByEmail(String email);
+    UserResponseDTO updateUserById(Integer id, UserRequestDTO user);
+
+    List<UserResponseDTO> getUsers();
+
+    UserResponseDTO getUserById(Integer id);
+
+    UserResponseDTO deleteUserById(Integer id);
 }

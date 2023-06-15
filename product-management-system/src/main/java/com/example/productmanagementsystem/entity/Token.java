@@ -1,11 +1,10 @@
 package com.example.productmanagementsystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 @Data
 @Builder
@@ -21,6 +20,7 @@ public class Token {
     @Column(unique = true)
     private String token;
 
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private TokenType tokenType = TokenType.BEARER;
 
@@ -28,6 +28,7 @@ public class Token {
 
     private boolean expired;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;

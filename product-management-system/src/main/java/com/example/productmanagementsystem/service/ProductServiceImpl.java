@@ -3,6 +3,7 @@ package com.example.productmanagementsystem.service;
 import com.example.productmanagementsystem.dto.ProductDTO;
 import com.example.productmanagementsystem.entity.Product;
 import com.example.productmanagementsystem.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
 
     @Autowired
