@@ -1,5 +1,5 @@
 # ProductManagementSystem
- A React product management system web application where users can add, see, update and delete products with Spring Boot RESTful API. The system user authentication and authorization is done by JWT authentication and Authorization. For Backend there 2 types of user: Admin & User. Admin user can access user and product CRUD API with JWT, where normal user can only product CRUD api.
+ A React product management system web application where users can add, see, update and delete products with Spring Boot RESTful API. The system user authentication and authorization is done by JWT authentication and Authorization. For Backend there 2 types of user: Admin & User. Admin user can manages user and product CRUD API with JWT, where normal user can only product CRUD api.
 
 # Features
 | Sign Up   | Login | Main  | Add Product  |
